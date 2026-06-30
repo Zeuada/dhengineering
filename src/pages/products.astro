@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import CTASection from '@/components/CTASection.astro';
+import ProductGallery from '@/components/ProductGallery.astro';
+import { products, materials } from '@/data/site';
+
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Products', href: '/products/' }];
+const files = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/product-*.{jpg,jpeg,png}', { eager: true });
+const pImg = (n: string) => files[`/src/assets/images/${n}`]?.default;
+---
+<BaseLayout
+  title="Products — Aluminium Die-Cast & Machined Components | DH Engineering"
+  description="Aluminium die-cast and precision-machined components by DH Engineering: brackets, mounting plates, hinges, levers, connecting links and structural housings — made to drawing-specified tolerances."
+  schemaType="products"
+  breadcrumbs={crumbs}
+>
+  <PageHeader
+    eyebrow="Our Products"
+    title="Aluminium die-cast & precision-machined components"
+    subtitle="A sample of parts produced at our facility for general engineering, industrial hardware and automotive applications — manufactured to drawing-specified tolerances."
+    current="/products/"
+  />
+
+  <!-- CATEGORIES -->
+  <section class="section">
+    <div class="container">
+      <div class="cat-list">
+        {products.map((p, i) => {
+          const img = pImg(p.image);
+          return (
+            <article class={`cat-row ${i % 2 ? 'cat-row--rev' : ''}`} id={p.slug}>
+              {img && (
+                <Image src={img} alt={`${p.title} — aluminium die-cast & machined component by DH Engineering`}
+                       widths={[420, 680]} sizes="(max-width: 820px) 92vw, 440px" loading={i < 2 ? 'eager' : 'lazy'} class="cat-img" />
+              )}
+              <div class="cat-body">
+                <h2>{p.title}</h2>
+                <p class="mt-1">{p.body}</p>
+                <a class="btn btn--outline mt-2" href={`/contact/?part=${p.slug}`}>Request a quote for this part</a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section section--paper">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Component gallery</span>
+        <h2>Parts produced at our facility</h2>
+        <p class="lead">Real aluminium die-cast and machined components. Click any image to enlarge.</p>
+      </div>
+      <ProductGallery />
+      <p class="text-center muted mt-4" style="font-size:.9rem">
+        {materials.note}
+      </p>
+    </div>
+  </section>
+
+  <CTASection heading="Have a drawing? Get a feasibility check & quote." />
+</BaseLayout>
+
+<style>
+  .cat-list { display: grid; gap: clamp(2rem, 5vw, 3.4rem); }
+  .cat-row { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(1.4rem, 4vw, 2.8rem); align-items: center; }
+  .cat-row--rev .cat-img { order: 2; }
+  .cat-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; background: #0c1623; border-radius: var(--radius); border: 1px solid var(--line); box-shadow: var(--shadow); }
+  .cat-body h2 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); }
+  @media (max-width: 820px) {
+    .cat-row, .cat-row--rev { grid-template-columns: 1fr; }
+    .cat-row--rev .cat-img { order: 0; }
+  }
+</style>

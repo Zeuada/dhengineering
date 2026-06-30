@@ -1,0 +1,26 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { nav } from '@/data/site';
+---
+<BaseLayout
+  title="Page Not Found | DH Engineering"
+  description="The page you were looking for could not be found."
+  noindex={true}
+>
+  <section class="section nf">
+    <div class="container narrow text-center">
+      <span class="eyebrow">404</span>
+      <h1>This page couldn't be found</h1>
+      <p class="lead mt-2">The link may be broken or the page may have moved. Try one of these instead:</p>
+      <div class="btn-row nf-links mt-3">
+        {nav.map((n) => <a class="btn btn--outline" href={n.href}>{n.label}</a>)}
+      </div>
+      <p class="mt-4"><a class="btn btn--accent" href="/contact/">Contact us</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf { padding-block: clamp(3rem, 9vw, 6rem); }
+  .nf-links { justify-content: center; }
+</style>

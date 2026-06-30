@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Update the host below if your production domain changes.
+Sitemap: https://www.dhengineering.in/sitemap-index.xml

@@ -1,0 +1,40 @@
+---
+import { nav } from '@/data/site';
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  current: string; // href of current page for breadcrumb
+}
+const { eyebrow, title, subtitle, current } = Astro.props;
+const crumbTitle = nav.find((n) => n.href === current)?.label ?? title;
+---
+<section class="page-header">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li aria-current="page">{crumbTitle}</li>
+      </ol>
+    </nav>
+    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    <h1>{title}</h1>
+    {subtitle && <p class="lead">{subtitle}</p>}
+  </div>
+</section>
+
+<style>
+  .page-header {
+    background:
+      radial-gradient(circle at 12% -20%, rgba(245,137,31,.16), transparent 42%),
+      linear-gradient(180deg, var(--ink) 0%, var(--ink-800) 100%);
+    color: #fff; padding-block: clamp(2.4rem, 5vw, 3.6rem);
+  }
+  .page-header h1 { color: #fff; max-width: 22ch; }
+  .page-header .lead { color: var(--on-dark-muted); margin-top: .9rem; max-width: 62ch; }
+  .crumbs ol { list-style: none; display: flex; gap: .5rem; padding: 0; margin: 0 0 1.1rem; font-size: .85rem; }
+  .crumbs li + li::before { content: '/'; margin-right: .5rem; color: var(--on-dark-muted); }
+  .crumbs a { color: var(--on-dark-muted); }
+  .crumbs a:hover { color: #fff; }
+  .crumbs li[aria-current] { color: var(--accent); font-weight: 600; }
+</style>

@@ -1,0 +1,33 @@
+---
+import { Image } from 'astro:assets';
+import logo from '@/assets/images/logo-dhe-lockup.png';
+
+interface Props {
+  variant?: 'dark' | 'light';
+  class?: string;
+}
+const { variant = 'dark', class: cls = '' } = Astro.props;
+---
+<span class={`logo logo--${variant} ${cls}`}>
+  <Image
+    src={logo}
+    alt="DH Engineering — Aluminium Die-Casting & Machining"
+    widths={[140, 220, 320]}
+    sizes="200px"
+    loading="eager"
+    class="logo__img"
+  />
+</span>
+
+<style>
+  .logo { display: flex; width: max-content; align-items: center; line-height: 0; }
+  .logo__img { height: 46px; width: auto; display: block; }
+  /* On the dark footer, sit the white-background logo on a subtle light card. */
+  .logo--light {
+    background: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+  .logo--light .logo__img { height: 42px; }
+  @media (max-width: 420px) { .logo__img { height: 40px; } }
+</style>

@@ -1,0 +1,79 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import CTASection from '@/components/CTASection.astro';
+import { iso } from '@/data/site';
+
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Downloads', href: '/downloads/' }];
+
+const files = [
+  {
+    title: 'Company Profile (PDF)',
+    desc: 'Overview of DH Engineering — capabilities, machine specifications, quality instruments and sample components.',
+    href: '/downloads/DH-Engineering-Company-Profile.pdf',
+    meta: 'PDF',
+    available: true,
+  },
+  {
+    title: 'ISO 9001:2015 Certificate',
+    desc: `Certificate No. ${iso.certNo}, issued by ${iso.issuedBy}. Available on request — contact us and we'll share a copy.`,
+    href: '/contact/',
+    meta: 'On request',
+    available: false,
+  },
+];
+---
+<BaseLayout
+  title="Downloads — Company Profile & Certificates | DH Engineering"
+  description="Download DH Engineering's company profile and request our ISO 9001:2015 certificate. Aluminium die-casting & machining, Kagal MIDC, Kolhapur."
+  breadcrumbs={crumbs}
+>
+  <PageHeader
+    eyebrow="Downloads"
+    title="Company profile & certificates"
+    subtitle="Everything procurement needs to evaluate DH Engineering, in one place."
+    current="/downloads/"
+  />
+
+  <section class="section">
+    <div class="container narrow">
+      <ul class="dl-list">
+        {files.map((f) => (
+          <li class="dl-item">
+            <span class="dl-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 12v6M9 15l3 3 3-3"/></svg>
+            </span>
+            <div class="dl-body">
+              <h3>{f.title} <span class="tag dl-meta">{f.meta}</span></h3>
+              <p>{f.desc}</p>
+            </div>
+            <a class={`btn ${f.available ? 'btn--accent' : 'btn--outline'} dl-btn`}
+               href={f.href}
+               {...(f.available ? { download: true } : {})}>
+              {f.available ? 'Download' : 'Request'}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+  .dl-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.2rem; }
+  .dl-item {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 1.2rem; align-items: center;
+    background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 1.4rem 1.6rem; box-shadow: var(--shadow-sm);
+  }
+  .dl-icon { width: 52px; height: 52px; border-radius: 10px; background: var(--mist); color: var(--steel); display: grid; place-items: center; }
+  .dl-body h3 { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+  .dl-body p { color: var(--muted); font-size: .95rem; margin-top: .3rem; }
+  .dl-meta { font-size: .72rem; }
+  @media (max-width: 620px) {
+    .dl-item { grid-template-columns: auto 1fr; }
+    .dl-btn { grid-column: 1 / -1; }
+  }
+</style>

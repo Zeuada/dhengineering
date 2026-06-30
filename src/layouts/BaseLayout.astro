@@ -1,0 +1,83 @@
+---
+import '@fontsource/space-grotesk/400.css';
+import '@fontsource/space-grotesk/500.css';
+import '@fontsource/space-grotesk/600.css';
+import '@fontsource/space-grotesk/700.css';
+import '@fontsource-variable/inter';
+import '@/styles/global.css';
+
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import WhatsAppButton from '@/components/WhatsAppButton.astro';
+import JsonLd from '@/components/JsonLd.astro';
+import { company } from '@/data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  schemaType?: 'home' | 'page' | 'products';
+  breadcrumbs?: { name: string; href: string }[];
+  noindex?: boolean;
+}
+const {
+  title,
+  description,
+  ogImage = '/og-default.jpg',
+  schemaType = 'page',
+  breadcrumbs,
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogUrl = new URL(ogImage, Astro.site).toString();
+const fullTitle = title.includes('DH Engineering') ? title : `${title} | DH Engineering`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta name="theme-color" content="#0f2238" />
+    <meta name="author" content="DH Engineering" />
+    <meta name="geo.region" content="IN-MH" />
+    <meta name="geo.placename" content="Kagal, Kolhapur" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DH Engineering" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <JsonLd type={schemaType} breadcrumbs={breadcrumbs} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <WhatsAppButton />
+  </body>
+</html>

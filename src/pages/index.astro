@@ -1,0 +1,178 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import StatBar from '@/components/StatBar.astro';
+import CTASection from '@/components/CTASection.astro';
+import IsoBadge from '@/components/IsoBadge.astro';
+import IndustriesServed from '@/components/IndustriesServed.astro';
+import { company, whyChoose, products } from '@/data/site';
+
+import hpdc from '@/assets/images/hpdc-cell-yizumi-pdc180.jpg';
+
+const waHref = `https://wa.me/${company.whatsapp.number}?text=${encodeURIComponent(company.whatsapp.prefill)}`;
+const homeWhy = whyChoose.slice(0, 4);
+
+// resolve product teaser images
+const files = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/product-*.{jpg,jpeg,png}', { eager: true });
+const pImg = (n: string) => files[`/src/assets/images/${n}`]?.default;
+---
+<BaseLayout
+  title="DH Engineering | Aluminium Die-Casting & Machining, Kolhapur"
+  description="ISO 9001:2015 certified manufacturer of aluminium die castings and precision machined components in Kagal Five Star MIDC, Kolhapur, Maharashtra. Casting to machining under one roof."
+  schemaType="home"
+>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__text">
+        <span class="tag hero__tag">
+          <IsoBadge size={18} /> ISO 9001:2015 Certified
+        </span>
+        <h1>Total Solutions in Aluminium Die-Casting &amp; Machining</h1>
+        <p class="lead">
+          ISO 9001:2015 certified manufacturing of aluminium die castings and precision
+          machined components — under one roof in Kagal, Kolhapur.
+        </p>
+        <div class="btn-row hero__cta">
+          <a class="btn btn--accent" href="/contact/">Get a Quote</a>
+          <a class="btn btn--on-dark" href="/infrastructure/">View Our Capabilities</a>
+        </div>
+        <ul class="hero__points">
+          <li>Casting → machining under one roof</li>
+          <li>Current-generation YIZUMI PDC-180 casting cell</li>
+          <li>In-house calibrated metrology &amp; tool resharpening</li>
+        </ul>
+      </div>
+
+      <div class="hero__media">
+        <Image src={hpdc} alt="DH Engineering high-pressure die casting cell — YIZUMI PDC-180 with electric holding furnace"
+               widths={[480, 760, 1040]} sizes="(max-width: 900px) 92vw, 540px" loading="eager" fetchpriority="high" class="hero__img" />
+        <div class="hero__chip">
+          <strong>Under one roof</strong>
+          <span>HPDC · VMC · CNC · Tool resharpening</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <StatBar variant="dark" />
+
+  <!-- INTRO -->
+  <section class="section">
+    <div class="container narrow text-center">
+      <span class="eyebrow">Who we are</span>
+      <h2>Aluminium components, from molten metal to finished part</h2>
+      <p class="lead mt-2">
+        Founded in {company.founded}, DH Engineering manufactures aluminium die castings and
+        supplies metal machined components from our {company.facilitySqFt} sq. ft. facility in
+        Kagal Five Star MIDC, Kolhapur. From high-pressure die casting to CNC machining and
+        in-house tool resharpening, we keep every step of production under one roof — so quality
+        stays consistent and lead times stay short.
+      </p>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE -->
+  <section class="section section--paper">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Why DH Engineering</span>
+        <h2>Built for consistent quality and short lead times</h2>
+      </div>
+      <div class="grid grid-4">
+        {homeWhy.map((w) => (
+          <div class="card card--feature">
+            <h3>{w.title}</h3>
+            <p>{w.short}</p>
+          </div>
+        ))}
+      </div>
+      <p class="text-center mt-4"><a class="btn btn--outline" href="/about/">More about our approach</a></p>
+    </div>
+  </section>
+
+  <!-- PRODUCTS TEASER -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">What we manufacture</span>
+        <h2>Die-cast &amp; machined aluminium components</h2>
+        <p class="lead">
+          Components for general engineering, industrial hardware and automotive applications —
+          including brackets, hinge plates, levers, mounting plates and connecting links.
+        </p>
+      </div>
+      <div class="grid grid-4 prod-teaser">
+        {products.map((p) => {
+          const img = pImg(p.image);
+          return (
+            <a class="prod-card" href="/products/">
+              {img && <Image src={img} alt={p.title} widths={[260, 420]} sizes="(max-width:600px) 45vw, 260px" loading="lazy" class="prod-card__img" />}
+              <span class="prod-card__title">{p.title}</span>
+            </a>
+          );
+        })}
+      </div>
+      <p class="text-center mt-4"><a class="btn btn--accent" href="/products/">View Products →</a></p>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section class="section section--mist">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Industries we serve</span>
+        <h2>Manufacturing to your drawing</h2>
+      </div>
+      <IndustriesServed />
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+  .hero {
+    background:
+      radial-gradient(circle at 85% -10%, rgba(245,137,31,.18), transparent 40%),
+      linear-gradient(160deg, var(--ink) 0%, var(--ink-900) 100%);
+    color: #fff; padding-block: clamp(2.6rem, 6vw, 4.6rem);
+  }
+  .hero__grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(1.6rem, 4vw, 3.4rem); align-items: center; }
+  .hero__tag { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); color: #fff; }
+  .hero h1 { color: #fff; margin-top: 1rem; }
+  .hero .lead { color: var(--on-dark-muted); margin-top: 1.1rem; max-width: 52ch; }
+  .hero__cta { margin-top: 1.8rem; }
+  .hero__points { list-style: none; padding: 0; margin: 1.8rem 0 0; display: grid; gap: .6rem; }
+  .hero__points li { position: relative; padding-left: 1.7rem; color: var(--on-dark); font-size: .98rem; }
+  .hero__points li::before {
+    content: ''; position: absolute; left: 0; top: .45em; width: 9px; height: 9px;
+    background: var(--accent); border-radius: 2px; transform: rotate(45deg);
+  }
+  .hero__media { position: relative; }
+  .hero__img { width: 100%; border-radius: var(--radius); box-shadow: var(--shadow-lg); border: 1px solid rgba(255,255,255,.1); }
+  .hero__chip {
+    position: absolute; left: 14px; bottom: -18px; background: #fff; color: var(--ink);
+    border-radius: var(--radius); padding: .8rem 1.1rem; box-shadow: var(--shadow);
+    display: flex; flex-direction: column; line-height: 1.2; border-left: 3px solid var(--accent);
+  }
+  .hero__chip strong { font-family: var(--font-head); }
+  .hero__chip span { font-size: .8rem; color: var(--muted); margin-top: 2px; }
+
+  .prod-card {
+    display: block; border: 1px solid var(--line); border-radius: var(--radius);
+    overflow: hidden; background: #0c1623; box-shadow: var(--shadow-sm); color: var(--ink);
+  }
+  .prod-card__img { width: 100%; aspect-ratio: 4/3; object-fit: cover; transition: transform .3s ease; }
+  .prod-card:hover .prod-card__img { transform: scale(1.04); }
+  .prod-card__title {
+    display: block; background: #fff; padding: .8rem 1rem; font-family: var(--font-head);
+    font-weight: 600; font-size: .95rem;
+  }
+
+  @media (max-width: 900px) {
+    .hero__grid { grid-template-columns: 1fr; }
+    .hero__media { order: -1; margin-bottom: 1.4rem; }
+    .hero__chip { bottom: -16px; }
+  }
+</style>

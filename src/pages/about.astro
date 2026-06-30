@@ -1,0 +1,129 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import StatBar from '@/components/StatBar.astro';
+import CTASection from '@/components/CTASection.astro';
+import IsoBadge from '@/components/IsoBadge.astro';
+import { company, whyChoose, iso } from '@/data/site';
+import hpdc from '@/assets/images/hpdc-cell-yizumi-pdc180.jpg';
+
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'About Us', href: '/about/' }];
+---
+<BaseLayout
+  title="About DH Engineering — Aluminium Die-Casting & Machining, Kolhapur"
+  description="DH Engineering is an ISO 9001:2015 certified aluminium die-casting and machining company at A-121 Five Star MIDC, Kagal, Kolhapur. Learn about our integrated facility, mission and values."
+  breadcrumbs={crumbs}
+>
+  <PageHeader
+    eyebrow="About Us"
+    title="A modern, integrated aluminium manufacturing facility"
+    subtitle="Casting, machining and tooling under one roof at Kagal Five Star MIDC, Kolhapur."
+    current="/about/"
+  />
+
+  <!-- STORY -->
+  <section class="section">
+    <div class="container about-grid">
+      <div>
+        <span class="eyebrow">Our story</span>
+        <h2>From molten aluminium to finished, machined components</h2>
+        <p class="mt-2">
+          DH Engineering was founded in {company.founded} with a clear goal: deliver first-class
+          quality in aluminium die-casting and machining, and keep improving to meet our
+          customers' changing needs. We're based at {company.address.line1}, Hatkanangale,
+          Kolhapur — a {company.facilitySqFt} sq. ft. RCC facility equipped for the full journey
+          from molten aluminium to finished, machined components.
+        </p>
+        <p class="mt-2">
+          As a young company, we've invested from day one in current-generation equipment and
+          an independently certified quality system — so customers get modern process capability,
+          consistent quality and responsive lead times without the overheads of a fragmented,
+          multi-vendor supply chain.
+        </p>
+        <div class="btn-row mt-3">
+          <a class="btn btn--accent" href="/contact/">Work with us</a>
+          <a class="btn btn--outline" href="/downloads/">Download company profile</a>
+        </div>
+      </div>
+      <div class="about-media">
+        <Image src={hpdc} alt="Inside DH Engineering's die-casting facility in Kagal MIDC, Kolhapur"
+               widths={[420, 680]} sizes="(max-width: 880px) 92vw, 460px" class="about-img" />
+      </div>
+    </div>
+  </section>
+
+  <StatBar variant="light" />
+
+  <!-- MISSION & VALUES -->
+  <section class="section section--paper">
+    <div class="container grid grid-2">
+      <div class="card">
+        <span class="eyebrow">Mission</span>
+        <h3>First-class quality, continuously improved</h3>
+        <p class="mt-1">
+          To provide first-class quality, and to continuously improve in order to meet the
+          ever-changing needs of our customers.
+        </p>
+      </div>
+      <div class="card">
+        <span class="eyebrow">Our values</span>
+        <h3>Our people drive our quality</h3>
+        <p class="mt-1">
+          We value the commitment, skill, attitude and effort of our employees, which is
+          essential to the company's success.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE (full) -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Why choose DH Engineering</span>
+        <h2>Five reasons buyers trust our process</h2>
+      </div>
+      <ol class="why-list">
+        {whyChoose.map((w, i) => (
+          <li class="why-item">
+            <span class="why-num">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{w.title}</h3>
+              <p>{w.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- CERT STRIP -->
+  <section class="section section--ink">
+    <div class="container cert-strip">
+      <IsoBadge size={96} />
+      <div>
+        <h2>Independently certified from day one</h2>
+        <p class="mt-1">
+          {iso.fullStandard} · Certificate No. {iso.certNo} · issued by {iso.issuedBy}.
+          Scope: {iso.scope}.
+        </p>
+        <a class="btn btn--accent mt-2" href="/quality/">See our quality system</a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+  .about-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: clamp(1.6rem, 4vw, 3rem); align-items: center; }
+  .about-img { width: 100%; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .why-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.2rem; }
+  .why-item { display: flex; gap: 1.2rem; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1.4rem 1.6rem; box-shadow: var(--shadow-sm); }
+  .why-num { font-family: var(--font-head); font-weight: 700; font-size: 1.6rem; color: var(--accent); line-height: 1; flex-shrink: 0; }
+  .why-item h3 { margin-bottom: .35rem; }
+  .why-item p { color: var(--muted); }
+  .cert-strip { display: flex; gap: 1.8rem; align-items: center; flex-wrap: wrap; }
+  @media (max-width: 880px) { .about-grid { grid-template-columns: 1fr; } .about-media { order: -1; } }
+</style>

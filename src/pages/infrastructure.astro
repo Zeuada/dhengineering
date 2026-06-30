@@ -1,0 +1,108 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import SpecTable from '@/components/SpecTable.astro';
+import CTASection from '@/components/CTASection.astro';
+import { company, hpdcSpec, machineShop, materials } from '@/data/site';
+
+import hpdc from '@/assets/images/hpdc-cell-yizumi-pdc180.jpg';
+import vmc from '@/assets/images/vmc-macpower-eco800.jpg';
+import cnc from '@/assets/images/cnc-turning-center.jpg';
+import resharp from '@/assets/images/cnc-tool-resharpener.jpg';
+
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Infrastructure', href: '/infrastructure/' }];
+const shopImages = [
+  { img: vmc, alt: 'VMC — Macpower ECO 800 vertical machining centre at DH Engineering', cap: 'VMC — Macpower ECO 800' },
+  { img: cnc, alt: 'CNC turning centre at DH Engineering', cap: 'CNC Turning Centre' },
+  { img: resharp, alt: 'CNC automatic tool resharpening machine at DH Engineering', cap: 'CNC Automatic Tool Resharpener' },
+];
+---
+<BaseLayout
+  title="Infrastructure & Capabilities — HPDC, CNC & VMC | DH Engineering"
+  description="DH Engineering's 65,000 sq. ft. facility in Kagal MIDC, Kolhapur: YIZUMI PDC-180 high-pressure die casting cell, VMC & CNC machining, lathe, drilling and in-house CNC tool resharpening."
+  breadcrumbs={crumbs}
+>
+  <PageHeader
+    eyebrow="Infrastructure"
+    title="Casting, machining and tooling in one facility"
+    subtitle={`Spread over a ${company.facilitySqFt} sq. ft. RCC structure at Kagal Five Star MIDC, our facility houses high-pressure die casting and a full machine shop.`}
+    current="/infrastructure/"
+  />
+
+  <!-- HPDC -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">High Pressure Die Casting</span>
+        <h2>Semi-automatic HPDC cell with dedicated holding furnace</h2>
+        <p class="lead">
+          We operate a high-pressure die casting machine as a semi-automatic cell with a
+          ladle-fed, dedicated electric holding furnace — ensuring consistent melt quality and
+          repeatable casting cycles.
+        </p>
+      </div>
+      <div class="machine-grid">
+        <Image src={hpdc} alt="YIZUMI PDC-180 high pressure die casting machine with electric holding furnace at DH Engineering"
+               widths={[460, 760, 1040]} sizes="(max-width: 920px) 92vw, 520px" class="machine-img" />
+        <div>
+          <SpecTable caption={hpdcSpec.machine} rows={hpdcSpec.rows} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MACHINE SHOP -->
+  <section class="section section--paper">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Machining &amp; Tooling</span>
+        <h2>A full in-house machine shop</h2>
+        <p class="lead">
+          VMC, CNC turning, conventional lathe and drilling — plus a dedicated CNC automatic
+          tool resharpening cell that maintains cutting-tool geometry in-house, reducing tool
+          turnaround time and supporting continuous machining runs.
+        </p>
+      </div>
+
+      <SpecTable head={machineShop.head} rows={machineShop.rows} />
+
+      <div class="shop-photos grid grid-3 mt-4">
+        {shopImages.map((s) => (
+          <figure class="shop-fig">
+            <Image src={s.img} alt={s.alt} widths={[320, 520]} sizes="(max-width: 700px) 92vw, 360px" class="shop-img" />
+            <figcaption>{s.cap}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- MATERIALS -->
+  <section class="section">
+    <div class="container narrow">
+      <span class="eyebrow">Materials</span>
+      <h2>Aluminium alloys</h2>
+      <p class="mt-2">{materials.note}</p>
+      <ul class="alloy-list mt-2">
+        {materials.grades.map((g) => <li class="tag">{g}</li>)}
+      </ul>
+      <p class="muted mt-2" style="font-size:.88rem">
+        Working to a specific grade or specification? Share it with your enquiry and we'll
+        confirm feasibility.
+      </p>
+    </div>
+  </section>
+
+  <CTASection heading="Need a part cast and machined to drawing?" />
+</BaseLayout>
+
+<style>
+  .machine-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; align-items: start; }
+  .machine-img { width: 100%; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .shop-fig { margin: 0; }
+  .shop-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius); border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+  .shop-fig figcaption { font-family: var(--font-head); font-weight: 600; font-size: .92rem; margin-top: .6rem; color: var(--ink); }
+  .alloy-list { list-style: none; padding: 0; display: flex; gap: .6rem; flex-wrap: wrap; }
+  @media (max-width: 920px) { .machine-grid { grid-template-columns: 1fr; } }
+</style>

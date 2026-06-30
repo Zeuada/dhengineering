@@ -1,0 +1,23 @@
+---
+interface Props {
+  caption?: string;
+  head?: readonly string[];
+  rows: readonly (readonly string[])[];
+}
+const { caption, head, rows } = Astro.props;
+---
+<div class="table-wrap">
+  <table class="spec">
+    {caption && <caption>{caption}</caption>}
+    {head && (
+      <thead>
+        <tr>{head.map((h) => <th scope="col">{h}</th>)}</tr>
+      </thead>
+    )}
+    <tbody>
+      {rows.map((r) => (
+        <tr>{r.map((cell, i) => (i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>))}</tr>
+      ))}
+    </tbody>
+  </table>
+</div>

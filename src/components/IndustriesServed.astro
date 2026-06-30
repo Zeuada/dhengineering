@@ -1,0 +1,24 @@
+---
+import { industries } from '@/data/site';
+interface Props { showNote?: boolean; }
+const { showNote = true } = Astro.props;
+---
+<div class="grid grid-3">
+  {industries.map((ind) => (
+    <div class="card card--feature">
+      <h3>{ind.title}</h3>
+      <p>{ind.body}</p>
+    </div>
+  ))}
+</div>
+{showNote && (
+  <p class="muted industries-note">
+    DH Engineering is a young company actively building its client portfolio. We support
+    customers from prototype and first-article through to repeat production batches —
+    manufacturing to your drawing-specified tolerances.
+  </p>
+)}
+
+<style>
+  .industries-note { margin-top: 1.6rem; max-width: 70ch; font-size: .95rem; }
+</style>

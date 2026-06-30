@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <rect x="1.5" y="1.5" width="45" height="45" rx="9" fill="#0f2238"/>
+  <rect x="1.5" y="1.5" width="45" height="45" rx="9" fill="none" stroke="#f5891f" stroke-width="2.5"/>
+  <text x="24" y="32" text-anchor="middle" font-family="Space Grotesk, Arial, sans-serif" font-size="20" font-weight="700" fill="#ffffff" letter-spacing="-0.5">DH</text>
+</svg>

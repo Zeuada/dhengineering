@@ -1,0 +1,20 @@
+{
+  "name": "dh-engineering-website",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev --host",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.2.1",
+    "@fontsource-variable/inter": "^5.1.0",
+    "@fontsource/space-grotesk": "^5.1.0",
+    "astro": "^4.16.18",
+    "sharp": "^0.33.5"
+  }
+}

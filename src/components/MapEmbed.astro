@@ -1,0 +1,19 @@
+---
+import { company } from '@/data/site';
+---
+<div class="map-embed">
+  <iframe
+    title="Map showing DH Engineering, A-121 Five Star MIDC, Kagal, Kolhapur"
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d394.95054756264716!2d74.34412019442026!3d16.62161711465923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc0fc4379aa1a19%3A0x12817616cdc0d242!2s121%2C%20Kagal%205%20Star%20MIDC%20Industrial%20Area%2C%20Halsavade%2C%20Maharashtra%20416236%2C%20India!5e0!3m2!1sen!2sus!4v1782816431364!5m2!1sen!2sus"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    allowfullscreen></iframe>
+</div>
+
+<style>
+  .map-embed {
+    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+    box-shadow: var(--shadow-sm); aspect-ratio: 16 / 10; background: var(--mist);
+  }
+  .map-embed iframe { width: 100%; height: 100%; border: 0; display: block; }
+</style>
