@@ -1,0 +1,121 @@
+---
+import { Image } from 'astro:assets';
+
+interface Slide { src: ImageMetadata; alt: string; }
+interface Props {
+  slides: Slide[];
+  interval?: number; // ms between auto-advances
+  class?: string;
+}
+const { slides, interval = 5000, class: cls = '' } = Astro.props;
+---
+<div class={`hero-carousel ${cls}`} data-interval={interval}
+     role="group" aria-roledescription="carousel" aria-label="DH Engineering facility">
+  <div class="hero-carousel__viewport">
+    {slides.map((s, i) => (
+      <figure class={`hc-slide ${i === 0 ? 'is-active' : ''}`} aria-hidden={i === 0 ? 'false' : 'true'}>
+        <Image
+          src={s.src}
+          alt={s.alt}
+          widths={[480, 760, 1080]}
+          sizes="(max-width: 900px) 92vw, 540px"
+          loading="eager"
+          fetchpriority={i === 0 ? 'high' : 'low'}
+          class="hc-img"
+        />
+      </figure>
+    ))}
+  </div>
+
+  <div class="hc-dots" role="tablist" aria-label="Choose slide">
+    {slides.map((s, i) => (
+      <button class={`hc-dot ${i === 0 ? 'is-active' : ''}`} type="button"
+              role="tab" aria-selected={i === 0 ? 'true' : 'false'}
+              aria-label={`Show image ${i + 1}: ${s.alt}`} data-index={i}></button>
+    ))}
+  </div>
+</div>
+
+<style>
+  .hero-carousel { position: relative; }
+  .hero-carousel__viewport {
+    position: relative; aspect-ratio: 7 / 5; border-radius: var(--radius);
+    overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid rgba(255,255,255,.1);
+    background: #0c1623;
+  }
+  .hc-slide {
+    position: absolute; inset: 0; margin: 0; opacity: 0;
+    transition: opacity .9s ease;
+    visibility: hidden;
+  }
+  .hc-slide.is-active { opacity: 1; visibility: visible; z-index: 1; }
+  .hc-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* Subtle, modern slow zoom on the active slide. */
+  .hc-slide.is-active .hc-img { animation: hc-zoom 7s ease-out forwards; }
+  @keyframes hc-zoom { from { transform: scale(1.06); } to { transform: scale(1); } }
+
+  .hc-dots {
+    position: absolute; z-index: 3; right: 14px; bottom: 12px;
+    display: flex; gap: 8px; justify-content: flex-end;
+  }
+  .hc-dot {
+    width: 10px; height: 10px; border-radius: 999px; cursor: pointer;
+    border: 1.5px solid rgba(255,255,255,.95); background: rgba(12,22,35,.35); padding: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,.35);
+    transition: background .2s ease, width .2s ease;
+  }
+  .hc-dot.is-active { background: var(--accent); border-color: var(--accent); width: 26px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hc-slide { transition: none; }
+    .hc-slide.is-active .hc-img { animation: none; }
+  }
+</style>
+
+<script>
+  function initCarousel(root: HTMLElement) {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('.hc-slide'));
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('.hc-dot'));
+    if (slides.length < 2) return;
+
+    const interval = Number(root.dataset.interval) || 5000;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let current = 0;
+    let timer: number | undefined;
+
+    const go = (next: number) => {
+      next = (next + slides.length) % slides.length;
+      slides[current].classList.remove('is-active');
+      slides[current].setAttribute('aria-hidden', 'true');
+      dots[current].classList.remove('is-active');
+      dots[current].setAttribute('aria-selected', 'false');
+      current = next;
+      slides[current].classList.add('is-active');
+      slides[current].setAttribute('aria-hidden', 'false');
+      dots[current].classList.add('is-active');
+      dots[current].setAttribute('aria-selected', 'true');
+    };
+
+    const start = () => {
+      if (reduce) return;
+      stop();
+      timer = window.setInterval(() => go(current + 1), interval);
+    };
+    const stop = () => { if (timer) window.clearInterval(timer); };
+
+    dots.forEach((d) =>
+      d.addEventListener('click', () => { go(Number(d.dataset.index)); start(); })
+    );
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+    document.addEventListener('visibilitychange', () =>
+      document.hidden ? stop() : start()
+    );
+
+    start();
+  }
+
+  document.querySelectorAll<HTMLElement>('.hero-carousel').forEach(initCarousel);
+</script>

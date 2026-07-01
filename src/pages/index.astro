@@ -5,12 +5,21 @@ import StatBar from '@/components/StatBar.astro';
 import CTASection from '@/components/CTASection.astro';
 import IsoBadge from '@/components/IsoBadge.astro';
 import IndustriesServed from '@/components/IndustriesServed.astro';
+import HeroCarousel from '@/components/HeroCarousel.astro';
 import { company, whyChoose, products } from '@/data/site';
 
 import hpdc from '@/assets/images/hpdc-cell-yizumi-pdc180.jpg';
+import facility from '@/assets/images/facility-exterior.jpg';
+import vmcShop from '@/assets/images/vmc-shop-floor.jpg';
 
 const waHref = `https://wa.me/${company.whatsapp.number}?text=${encodeURIComponent(company.whatsapp.prefill)}`;
 const homeWhy = whyChoose.slice(0, 4);
+
+const heroSlides = [
+  { src: hpdc, alt: 'DH Engineering high-pressure die casting cell — YIZUMI PDC-180 with electric holding furnace' },
+  { src: facility, alt: 'DH Engineering manufacturing facility at A-121 Five Star MIDC, Kagal, Kolhapur' },
+  { src: vmcShop, alt: 'Vertical machining centre (Macpower ECO 800) on the shop floor at DH Engineering' },
+];
 
 // resolve product teaser images
 const files = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/product-*.{jpg,jpeg,png}', { eager: true });
@@ -45,8 +54,7 @@ const pImg = (n: string) => files[`/src/assets/images/${n}`]?.default;
       </div>
 
       <div class="hero__media">
-        <Image src={hpdc} alt="DH Engineering high-pressure die casting cell — YIZUMI PDC-180 with electric holding furnace"
-               widths={[480, 760, 1040]} sizes="(max-width: 900px) 92vw, 540px" loading="eager" fetchpriority="high" class="hero__img" />
+        <HeroCarousel slides={heroSlides} />
         <div class="hero__chip">
           <strong>Under one roof</strong>
           <span>HPDC · VMC · CNC · Tool resharpening</span>
@@ -152,7 +160,7 @@ const pImg = (n: string) => files[`/src/assets/images/${n}`]?.default;
   .hero__media { position: relative; }
   .hero__img { width: 100%; border-radius: var(--radius); box-shadow: var(--shadow-lg); border: 1px solid rgba(255,255,255,.1); }
   .hero__chip {
-    position: absolute; left: 14px; bottom: -18px; background: #fff; color: var(--ink);
+    position: absolute; z-index: 5; left: 14px; bottom: -18px; background: #fff; color: var(--ink);
     border-radius: var(--radius); padding: .8rem 1.1rem; box-shadow: var(--shadow);
     display: flex; flex-direction: column; line-height: 1.2; border-left: 3px solid var(--accent);
   }
