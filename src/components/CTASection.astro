@@ -35,5 +35,8 @@ const waHref = `https://wa.me/${company.whatsapp.number}?text=${encodeURICompone
   .cta h2 { color: #fff; margin-bottom: .5rem; }
   .cta p { color: var(--on-dark-muted); }
   .cta__actions { flex-shrink: 0; }
-  @media (max-width: 720px) { .cta__actions .btn { flex: 1; } }
+  @media (max-width: 720px) {
+    .cta__actions { width: 100%; flex-shrink: 1; }
+    .cta__actions .btn { flex: 1 1 0; min-width: 0; }
+  }
 </style>
